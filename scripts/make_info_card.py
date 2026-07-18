@@ -1,332 +1,124 @@
-from pathlib import Path
-import json
-import requests
-from datetime import datetime
+"""
+Build a neofetch-style info card SVG (Andrew6rant style) to sit to the RIGHT of
+the ASCII portrait: colored key/value rows for work experience, tech stack, and
+highlights -- NOT GitHub stats (the contribution graph covers those).
 
-OUTPUT = Path("info-card.svg")
-PROFILE = Path("data/profile.json")
+Static content, hand-authored below. Lines fade/slide in on a short stagger so
+it feels like the panel is printing alongside the portrait. STATIC=1 emits the
+frozen state for Quick Look previews.
+"""
+import html
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(HERE, "..", "info-card.svg")
+STATIC = bool(os.environ.get("STATIC"))
+
+W, H = 480, 376
+PAD = 20
+TITLEBAR_H = 30
+KEY_X = PAD
+VAL_X = PAD + 92
+LINE_H = 20.5
 
 BG = "#0d1117"
-FG = "#c9d1d9"
+BG2 = "#111722"
+FRAME = "#30363d"
+MUTED = "#7d8590"
+INK = "#c9d1d9"
+KEY = "#ffa657"      # orange keys (matches Andrew)
+SECTION = "#58a6ff"  # blue section headers
 GREEN = "#3fb950"
-BLUE = "#58a6ff"
-YELLOW = "#d29922"
-RED = "#f85149"
-GRAY = "#8b949e"
-
-WIDTH = 900
-HEIGHT = 420
-
-
-DEFAULT_PROFILE = {
-    "name": "Shavan Sanhotra",
-    "username": "Shavan889",
-    "location": "Mohali, India",
-    "role": "MERN Stack Developer",
-    "editor": "VS Code",
-    "os": "Windows 11",
-    "languages": [
-        "JavaScript",
-        "Python",
-        "HTML",
-        "CSS"
-    ],
-    "frameworks": [
-        "React",
-        "Node.js",
-        "Express",
-        "MongoDB"
-    ],
-    "tools": [
-        "Git",
-        "GitHub",
-        "Postman",
-        "Docker"
-    ]
-}
-
-
-def load_profile():
-
-    if PROFILE.exists():
-
-        with open(PROFILE, "r", encoding="utf8") as f:
-            return json.load(f)
-
-    PROFILE.parent.mkdir(exist_ok=True)
-
-    with open(PROFILE, "w", encoding="utf8") as f:
-        json.dump(DEFAULT_PROFILE, f, indent=4)
-
-    return DEFAULT_PROFILE
-
-
-def github_stats(username):
-
-    try:
-
-        url = f"https://api.github.com/users/{username}"
-
-        r = requests.get(url, timeout=15)
-
-        if r.status_code != 200:
-            return {}
-
-        d = r.json()
-
-        return {
-            "repos": d["public_repos"],
-            "followers": d["followers"],
-            "following": d["following"]
-        }
-
-    except Exception:
-
-        return {}
-
-
-def svg_header():
-
-    return f"""<?xml version="1.0" encoding="UTF-8"?>
-
-<svg
-xmlns="http://www.w3.org/2000/svg"
-width="{WIDTH}"
-height="{HEIGHT}"
-viewBox="0 0 {WIDTH} {HEIGHT}">
-
-<rect
-width="100%"
-height="100%"
-rx="18"
-fill="{BG}"/>
-
-<style>
-
-text {{
-font-family: Consolas, monospace;
-fill:{FG};
-font-size:16px;
-}}
-
-.title {{
-font-size:20px;
-font-weight:bold;
-}}
-
-.green {{
-fill:{GREEN};
-}}
-
-.blue {{
-fill:{BLUE};
-}}
-
-.yellow {{
-fill:{YELLOW};
-}}
-
-.gray {{
-fill:{GRAY};
-}}
-
-</style>
-
-"""
-
-
-def terminal_bar():
-
-    return f"""
-<circle cx="25" cy="25" r="7" fill="{RED}"/>
-<circle cx="50" cy="25" r="7" fill="{YELLOW}"/>
-<circle cx="75" cy="25" r="7" fill="{GREEN}"/>
-
-<text
-x="120"
-y="30"
-class="gray">
-
-terminal
-
-</text>
-
-<line
-x1="0"
-y1="45"
-x2="{WIDTH}"
-y2="45"
-stroke="#30363d"/>
-"""
-def ascii_logo():
-
-    return [
-        "        #####        ",
-        "      #########      ",
-        "     ###     ###     ",
-        "    ###       ###    ",
-        "    ###       ###    ",
-        "    ###       ###    ",
-        "    ###       ###    ",
-        "     ###     ###     ",
-        "      #########      ",
-        "        #####        "
-    ]
-
-
-def render_logo():
-
-    svg = []
-
-    y = 90
-
-    for line in ascii_logo():
-
-        svg.append(f"""
-<text
-x="35"
-y="{y}"
-class="green"
-xml:space="preserve">
-{line}
-</text>
-""")
-
-        y += 18
-
-    return "".join(svg)
-
-
-def render_profile(profile, stats):
-
-    svg = []
-
-    x = 260
-    y = 90
-
-    def row(label, value, color=""):
-
-        nonlocal y
-
-        cls = ""
-
-        if color:
-            cls = f'class="{color}"'
-
-        svg.append(f"""
-<text
-x="{x}"
-y="{y}">
-<tspan class="green">$</tspan>
-<tspan> {label}: </tspan>
-<tspan {cls}>{value}</tspan>
-</text>
-""")
-
-        y += 28
-
-
-    row("Name", profile["name"], "blue")
-    row("Username", profile["username"])
-    row("Role", profile["role"])
-    row("Location", profile["location"])
-    row("OS", profile["os"])
-    row("Editor", profile["editor"])
-
-    row("Repositories", stats.get("repos", "-"))
-    row("Followers", stats.get("followers", "-"))
-    row("Following", stats.get("following", "-"))
-
-    row("Updated", datetime.now().strftime("%d %b %Y"))
-
-
-    return "".join(svg)
-
-
-def render_skills(profile):
-
-    svg = []
-
-    y = 360
-
-    svg.append(f"""
-<text
-x="35"
-y="{y}"
-class="title">
-Skills
-</text>
-""")
-
-    y += 28
-
-    svg.append(f"""
-<text
-x="35"
-y="{y}">
-Languages :
-{", ".join(profile["languages"])}
-</text>
-""")
-
-    y += 24
-
-    svg.append(f"""
-<text
-x="35"
-y="{y}">
-Frameworks :
-{", ".join(profile["frameworks"])}
-</text>
-""")
-
-    y += 24
-
-    svg.append(f"""
-<text
-x="35"
-y="{y}">
-Tools :
-{", ".join(profile["tools"])}
-</text>
-""")
-
-    return "".join(svg)
-
-def build_svg(profile, stats):
-
-    svg = []
-
-    svg.append(svg_header())
-    svg.append(terminal_bar())
-    svg.append(render_logo())
-    svg.append(render_profile(profile, stats))
-    svg.append(render_skills(profile))
-
-    svg.append("""
-</svg>
-""")
-
-    return "".join(svg)
-
-
-def save_svg(svg):
-
-    OUTPUT.write_text(svg, encoding="utf-8")
-
-
-def main():
-
-    profile = load_profile()
-
-    stats = github_stats(profile["username"])
-
-    svg = build_svg(profile, stats)
-
-    save_svg(svg)
-
-    print(f"Done!\nSaved -> {OUTPUT}")
-
-
-if __name__ == "__main__":
-    main()
+ACCENT = "#22d3ee"
+
+# content model: tuples describing each row
+# ("host",)                    -> "avi@github" + rule
+# ("kv", key, value)           -> orange key + light value
+# ("sec", title)               -> blue "— title —" rule
+# ("bul", text)                -> green dot + light text
+# ("gap",)                     -> vertical space
+ROWS = [
+    ("host",),
+    ("kv", "Now", "MERN Stack Developer"),
+    ("kv", "Status", "Open to Work"),
+    ("kv", "Location", "Mohali, Punjab"),
+    ("kv", "Edu", "BCA, Sardar Patel University"),
+    ("gap",),
+    ("sec", "Stack"),
+    ("kv", "Frontend", "React, Next.js, JavaScript"),
+    ("kv", "Backend", "Node.js, Express.js"),
+    ("kv", "Database", "MongoDB, MySQL"),
+    ("kv", "Other", "Git, REST APIs, Docker"),
+    ("gap",),
+    ("sec", "Highlights"),
+    ("bul", "Built AI Interview Generator"),
+    ("bul", "Built RYDO Ride Booking App"),
+]
+
+
+def esc(s):
+    return html.escape(s)
+
+
+def rise(inner, i):
+    """fade + slight upward slide, staggered by row index; freezes visible."""
+    if STATIC:
+        return f"<g>{inner}</g>"
+    delay = 0.15 + i * 0.06
+    return (f'<g opacity="0" transform="translate(0,5)">{inner}'
+            f'<animate attributeName="opacity" from="0" to="1" begin="{delay:.2f}s" dur="0.4s" fill="freeze"/>'
+            f'<animateTransform attributeName="transform" type="translate" from="0 5" to="0 0" '
+            f'begin="{delay:.2f}s" dur="0.4s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1"/></g>')
+
+
+parts = [
+    f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
+    f'font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">',
+    '<defs>'
+    f'<linearGradient id="ibg" x1="0" y1="0" x2="0" y2="1">'
+    f'<stop offset="0" stop-color="{BG2}"/><stop offset="1" stop-color="{BG}"/></linearGradient></defs>',
+    f'<rect width="{W}" height="{H}" rx="12" fill="url(#ibg)"/>',
+    f'<rect x="0.5" y="0.5" width="{W-1}" height="{H-1}" rx="12" fill="none" stroke="{FRAME}"/>',
+    f'<line x1="0" y1="{TITLEBAR_H}" x2="{W}" y2="{TITLEBAR_H}" stroke="{FRAME}"/>',
+]
+for i, dotcol in enumerate(["#ff5f56", "#ffbd2e", "#27c93f"]):
+    parts.append(f'<circle cx="{PAD + i*16}" cy="{TITLEBAR_H/2}" r="5" fill="{dotcol}"/>')
+parts.append(f'<text x="{W/2}" y="{TITLEBAR_H/2 + 4}" fill="{MUTED}" font-size="12" '
+             f'text-anchor="middle">shavan@github: ~$ neofetch</text>')
+
+y = TITLEBAR_H + 30
+for i, row in enumerate(ROWS):
+    kind = row[0]
+    if kind == "gap":
+        y += LINE_H * 0.5
+        continue
+    if kind == "host":
+        inner = (f'<text x="{KEY_X}" y="{y:.1f}" font-size="14" font-weight="700">'
+                 f'<tspan fill="{GREEN}">shavan</tspan><tspan fill="{MUTED}">@</tspan>'
+                 f'<tspan fill="{ACCENT}">github</tspan></text>'
+                 f'<line x1="{KEY_X+96}" y1="{y-4:.1f}" x2="{W-PAD}" y2="{y-4:.1f}" '
+                 f'stroke="{FRAME}" stroke-opacity="0.8"/>')
+    elif kind == "sec":
+        title = esc(row[1])
+        inner = (f'<text x="{KEY_X}" y="{y:.1f}" fill="{SECTION}" font-size="12.5" font-weight="700">'
+                 f'&#8212; {title}</text>'
+                 f'<line x1="{KEY_X + 12 + len(row[1])*8}" y1="{y-4:.1f}" x2="{W-PAD}" y2="{y-4:.1f}" '
+                 f'stroke="{FRAME}" stroke-opacity="0.8"/>')
+    elif kind == "kv":
+        key, val = esc(row[1]), esc(row[2])
+        inner = (f'<text x="{KEY_X}" y="{y:.1f}" fill="{KEY}" font-size="12.5" font-weight="700">{key}</text>'
+                 f'<text x="{VAL_X}" y="{y:.1f}" fill="{INK}" font-size="12.5">{val}</text>')
+    elif kind == "bul":
+        txt = esc(row[1])
+        inner = (f'<circle cx="{KEY_X+3}" cy="{y-4:.1f}" r="2.5" fill="{GREEN}"/>'
+                 f'<text x="{KEY_X+14}" y="{y:.1f}" fill="{INK}" font-size="12.5">{txt}</text>')
+    else:
+        continue
+    parts.append(rise(inner, i))
+    y += LINE_H
+
+parts.append("</svg>")
+svg = "".join(parts)
+with open(OUT, "w") as f:
+    f.write(svg)
+print("wrote", OUT, len(svg), "bytes;", W, "x", H, "content_bottom", round(y))

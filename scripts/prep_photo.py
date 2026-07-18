@@ -1,80 +1,46 @@
+"""
+Prepare a portrait photo for clean ASCII conversion:
+  1. remove the background (rembg) so the subject is isolated
+  2. boost LOCAL contrast (CLAHE) so a flatly-lit face gains highlights and
+     shadows -- this is what turns a dark blob into a recognizable face
+  3. composite the subject onto pure white so the background reads as blank
+     (white -> spaces in the ascii ramp)
+
+Output: source-prepped.png (grayscale), consumed by make_ascii_svg.py.
+Run once whenever the source photo changes; the ascii SVG itself is static.
+
+    python scripts/prep_photo.py <input.jpg> [output.png]
+"""
+import os
 import sys
-from pathlib import Path
 
 import cv2
 import numpy as np
 from PIL import Image
 from rembg import remove
 
+HERE = os.path.dirname(os.path.abspath(__file__))
+INP = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-photo.jpg")
+OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "source-prepped.png")
 
-def remove_background(image_path):
-    """Remove background using rembg."""
-    with open(image_path, "rb") as f:
-        input_bytes = f.read()
+# 1. cut out the subject
+cut = remove(Image.open(INP).convert("RGBA"))
+rgb = np.array(cut.convert("RGB"))
+alpha = np.array(cut.split()[-1])                 # 0 = background
 
-    output_bytes = remove(input_bytes)
+# 2. local-contrast the luminance (CLAHE)
+gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+clahe = cv2.createCLAHE(clipLimit=2.6, tileGridSize=(8, 8))
+gray = clahe.apply(gray)
 
-    image = Image.open(
-        __import__("io").BytesIO(output_bytes)
-    ).convert("RGBA")
+# a touch of global lift so the face sits in the sparse end of the ramp
+gray = cv2.convertScaleAbs(gray, alpha=1.05, beta=18)
 
-    return image
+# 3. paste onto white using the alpha mask (feathered a hair to avoid a halo)
+mask = (alpha.astype(np.float32) / 255.0)
+mask = cv2.GaussianBlur(mask, (0, 0), 1.0)
+out = gray.astype(np.float32) * mask + 255.0 * (1.0 - mask)
+out = np.clip(out, 0, 255).astype(np.uint8)
 
-
-def composite_white(image):
-    """Composite transparent image onto white background."""
-    white = Image.new("RGBA", image.size, (255, 255, 255, 255))
-    white.paste(image, mask=image)
-    return white.convert("RGB")
-
-
-def enhance_contrast(image):
-    """Convert to grayscale and apply CLAHE."""
-    img = np.array(image)
-
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-
-    clahe = cv2.createCLAHE(
-        clipLimit=2.5,
-        tileGridSize=(8, 8)
-    )
-
-    enhanced = clahe.apply(gray)
-
-    return Image.fromarray(enhanced)
-
-
-def process(input_path, output_path):
-    print("Removing background...")
-    img = remove_background(input_path)
-
-    print("Applying white background...")
-    img = composite_white(img)
-
-    print("Enhancing contrast...")
-    img = enhance_contrast(img)
-
-    img.save(output_path)
-
-    print(f"\nDone!\nSaved: {output_path}")
-
-
-def main():
-    if len(sys.argv) < 2:
-        print("Usage:")
-        print("python scripts/prep_photo.py photo.jpg")
-        sys.exit(1)
-
-    input_file = Path(sys.argv[1])
-
-    if not input_file.exists():
-        print("Input image not found.")
-        sys.exit(1)
-
-    output_file = "source-prepped.png"
-
-    process(str(input_file), output_file)
-
-
-if __name__ == "__main__":
-    main()
+Image.fromarray(out, mode="L").save(OUT)
+print("wrote", OUT, out.shape)

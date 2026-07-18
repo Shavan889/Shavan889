@@ -1,67 +1,40 @@
 <div align="center">
 
-# Hi 👋, I'm Shavan Sanhotra
+<!-- hero: monochrome ASCII portrait (types in) beside a neofetch-style info
+     panel. regenerate portrait: python scripts/prep_photo.py <photo> &&
+     python scripts/make_ascii_svg.py ; info panel: python scripts/make_info_card.py -->
 
-### MERN Stack Developer • Full Stack Enthusiast • Open Source Learner
+<!-- animated contribution graph: real data, boxes reveal cell by cell
+     (regenerated daily by .github/workflows/update-profile-art.yml) -->
 
-<img src="./avi-ascii.svg" width="850"/>
+<h3><code>shavan@github ~ $ ./contributions.sh</code></h3>
 
-</div>
+<img src="./contrib-heatmap.svg" width="860" alt="Avi's GitHub contribution graph — auto-refreshed daily" />
 
----
+<br>
+<br>
 
-<div align="center">
+<h3><code>shavan@github ~ $ whoami</code></h3>
 
-<img src="./info-card.svg" width="900"/>
+<table>
+<tr>
+<td valign="top"><img src="./avi-ascii.svg" width="370" alt="Shavan Sanhotra — ASCII portrait" /></td>
+<td valign="top"><img src="./info-card.svg" width="490" alt="Shavan Sanhotra — experience, stack, highlights" /></td>
+</tr>
+</table>
 
-</div>
+<br>
+<br>
 
----
+<h3><code>shavan@github ~ $ ./links.sh</code></h3>
 
-## 🚀 Tech Stack
+<p><b>Fullstack Developer · AI Builder · Instructor</b></p>
 
-<div align="center">
+[![Portfolio](https://img.shields.io/badge/Portfolio-avivashishta.com-0d1117?style=for-the-badge&logo=vercel&logoColor=white)](https://www.avivashishta.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-avivashishta-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/avivashishta)
+[![Instagram](https://img.shields.io/badge/Instagram-avi__vashishta29-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/avi_vashishta29)
+[![Live Terminal](https://img.shields.io/badge/⚡_Live_Terminal-Shavan889.github.io-22d3ee?style=for-the-badge&logo=gnometerminal&logoColor=black)](https://Shavan889.github.io)
 
-![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)
-![React](https://img.shields.io/badge/React-20232a?style=for-the-badge&logo=react)
-![Node.js](https://img.shields.io/badge/Node.js-3C873A?style=for-the-badge&logo=node.js)
-![Express](https://img.shields.io/badge/Express-black?style=for-the-badge&logo=express)
-![MongoDB](https://img.shields.io/badge/MongoDB-13AA52?style=for-the-badge&logo=mongodb)
-
-</div>
-
----
-
-## 📊 Contributions
-
-<div align="center">
-
-<img src="./contrib-heatmap.svg" width="900"/>
-
-</div>
-
----
-
-## 🌎 Connect With Me
-
-<div align="center">
-
-<a href="https://github.com/Shavan889">
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github">
-</a>
-
-<a href="https://www.linkedin.com/">
-<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin">
-</a>
-
-</div>
-
----
-
-<div align="center">
-
-⭐ Thanks for visiting my profile ⭐
+<br>
 
 </div>
