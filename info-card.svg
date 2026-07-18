@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+width="900"
+height="420"
+viewBox="0 0 900 420">
+
+<rect
+width="100%"
+height="100%"
+rx="18"
+fill="#0d1117"/>
+
+<style>
+
+text {
+font-family: Consolas, monospace;
+fill:#c9d1d9;
+font-size:16px;
+}
+
+.title {
+font-size:20px;
+font-weight:bold;
+}
+
+.green {
+fill:#3fb950;
+}
+
+.blue {
+fill:#58a6ff;
+}
+
+.yellow {
+fill:#d29922;
+}
+
+.gray {
+fill:#8b949e;
+}
+
+</style>
+
+
+<circle cx="25" cy="25" r="7" fill="#f85149"/>
+<circle cx="50" cy="25" r="7" fill="#d29922"/>
+<circle cx="75" cy="25" r="7" fill="#3fb950"/>
+
+<text
+x="120"
+y="30"
+class="gray">
+
+terminal
+
+</text>
+
+<line
+x1="0"
+y1="45"
+x2="900"
+y2="45"
+stroke="#30363d"/>
+
+<text
+x="35"
+y="90"
+class="green"
+xml:space="preserve">
+        #####        
+</text>
+
+<text
+x="35"
+y="108"
+class="green"
+xml:space="preserve">
+      #########      
+</text>
+
+<text
+x="35"
+y="126"
+class="green"
+xml:space="preserve">
+     ###     ###     
+</text>
+
+<text
+x="35"
+y="144"
+class="green"
+xml:space="preserve">
+    ###       ###    
+</text>
+
+<text
+x="35"
+y="162"
+class="green"
+xml:space="preserve">
+    ###       ###    
+</text>
+
+<text
+x="35"
+y="180"
+class="green"
+xml:space="preserve">
+    ###       ###    
+</text>
+
+<text
+x="35"
+y="198"
+class="green"
+xml:space="preserve">
+    ###       ###    
+</text>
+
+<text
+x="35"
+y="216"
+class="green"
+xml:space="preserve">
+     ###     ###     
+</text>
+
+<text
+x="35"
+y="234"
+class="green"
+xml:space="preserve">
+      #########      
+</text>
+
+<text
+x="35"
+y="252"
+class="green"
+xml:space="preserve">
+        #####        
+</text>
+
+<text
+x="260"
+y="90">
+<tspan class="green">$</tspan>
+<tspan> Name: </tspan>
+<tspan class="blue">Shavan Sanhotra</tspan>
+</text>
+
+<text
+x="260"
+y="118">
+<tspan class="green">$</tspan>
+<tspan> Username: </tspan>
+<tspan >Shavan889</tspan>
+</text>
+
+<text
+x="260"
+y="146">
+<tspan class="green">$</tspan>
+<tspan> Role: </tspan>
+<tspan >MERN Stack Developer</tspan>
+</text>
+
+<text
+x="260"
+y="174">
+<tspan class="green">$</tspan>
+<tspan> Location: </tspan>
+<tspan >Mohali, India</tspan>
+</text>
+
+<text
+x="260"
+y="202">
+<tspan class="green">$</tspan>
+<tspan> OS: </tspan>
+<tspan >Windows 11</tspan>
+</text>
+
+<text
+x="260"
+y="230">
+<tspan class="green">$</tspan>
+<tspan> Editor: </tspan>
+<tspan >VS Code</tspan>
+</text>
+
+<text
+x="260"
+y="258">
+<tspan class="green">$</tspan>
+<tspan> Repositories: </tspan>
+<tspan >34</tspan>
+</text>
+
+<text
+x="260"
+y="286">
+<tspan class="green">$</tspan>
+<tspan> Followers: </tspan>
+<tspan >0</tspan>
+</text>
+
+<text
+x="260"
+y="314">
+<tspan class="green">$</tspan>
+<tspan> Following: </tspan>
+<tspan >2</tspan>
+</text>
+
+<text
+x="260"
+y="342">
+<tspan class="green">$</tspan>
+<tspan> Updated: </tspan>
+<tspan >18 Jul 2026</tspan>
+</text>
+
+<text
+x="35"
+y="360"
+class="title">
+Skills
+</text>
+
+<text
+x="35"
+y="388">
+Languages :
+JavaScript, Python, HTML, CSS
+</text>
+
+<text
+x="35"
+y="412">
+Frameworks :
+React, Node.js, Express, MongoDB
+</text>
+
+<text
+x="35"
+y="436">
+Tools :
+Git, GitHub, Postman, Docker
+</text>
+
+</svg>

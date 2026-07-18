@@ -1,0 +1,26 @@
+{
+    "name": "Shavan Sanhotra",
+    "username": "Shavan889",
+    "location": "Mohali, India",
+    "role": "MERN Stack Developer",
+    "editor": "VS Code",
+    "os": "Windows 11",
+    "languages": [
+        "JavaScript",
+        "Python",
+        "HTML",
+        "CSS"
+    ],
+    "frameworks": [
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB"
+    ],
+    "tools": [
+        "Git",
+        "GitHub",
+        "Postman",
+        "Docker"
+    ]
+}
