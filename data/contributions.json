@@ -1,22 +1,22 @@
 {
   "username": "Shavan889",
-  "generated_at": "2026-10-29T12:55:52Z",
+  "generated_at": "2026-10-30T12:48:45Z",
   "range": {
     "start": "2025-10-26",
+    "end": "2026-10-30"
+  },
+  "total_contributions": 1431,
+  "active_days": 241,
+  "avg_per_active_day": 5.9,
+  "current_streak": {
+    "length": 131,
+    "start": "2026-06-21",
     "end": "2026-10-29"
   },
-  "total_contributions": 1430,
-  "active_days": 240,
-  "avg_per_active_day": 6.0,
-  "current_streak": {
-    "length": 130,
-    "start": "2026-06-21",
-    "end": "2026-10-28"
-  },
   "longest_streak": {
-    "length": 130,
+    "length": 131,
     "start": "2026-06-21",
-    "end": "2026-10-28"
+    "end": "2026-10-29"
   },
   "best_day": {
     "date": "2026-05-29",
@@ -73,7 +73,7 @@
     },
     {
       "month": "2026-10",
-      "total": 73
+      "total": 74
     }
   ],
   "days": [
@@ -1551,6 +1551,10 @@
     },
     {
       "date": "2026-10-29",
+      "count": 1
+    },
+    {
+      "date": "2026-10-30",
       "count": 0
     }
   ]
